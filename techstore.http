@@ -1,4 +1,4 @@
-@techstore_HostAddress = http://localhost:5197
+@techstore_HostAddress = http://localhost:5229
 
 GET {{techstore_HostAddress}}/weatherforecast/
 Accept: application/json
