@@ -9,7 +9,6 @@ namespace techstore.Models;
 public class Product
 {   
     [Key]
-    [Required]
     public int Id { get; set; }
 
     [Required]

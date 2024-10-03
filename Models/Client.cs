@@ -8,6 +8,7 @@ namespace techstore.Models;
 
 public class Client
 {
+    [Key]
     public int Id { get; set; }
 
     [Required]
