@@ -11,5 +11,10 @@ public class Employee : User
 {
     [Required]
     public DateTime HireDate { get; set; }
+
     public string Department { get; set; }
+
+    public int UserId { get; set; }
+    public User User { get; set; }
 }
+

@@ -10,6 +10,8 @@ public class Admin : User
 {
     [Required]
     public string AdminPrivileges { get; set; }
-    public User User { get; set; } 
+    public int UserId { get; set; }
+    public User User { get; set; }
 }
+
 
