@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace techstore.Models;
 
-public class Admin : User
+
+public class Employee : User
 {
     [Required]
-    public string AdminPrivileges { get; set; }
-    public User User { get; set; } 
+    public DateTime HireDate { get; set; }
+    public string Department { get; set; }
 }
-
