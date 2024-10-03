@@ -16,7 +16,8 @@ public class Category
     [Required]
     [StringLength(30, ErrorMessage = "Name must be between 3 and 30 characters long.", MinimumLength = 3)]
     public string Name { get; set; }
-
+    
+    [Required]
     [StringLength(100, ErrorMessage = "Description must be between 3 and 100 characters long.", MinimumLength = 3)]
     public string Description { get; set; }
 
