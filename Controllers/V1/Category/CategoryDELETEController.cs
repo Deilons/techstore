@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using techstore.Repositories;
+using techstore.DTOs;
+
 
 namespace techstore.Controllers.V1.Category
 {
@@ -11,24 +13,22 @@ namespace techstore.Controllers.V1.Category
     [Route("api/v1/category")]
     [ApiExplorerSettings(GroupName = "v1")]
     [Tags("Category")]
-    public class CategoryDELETEController : ControllerBase
+    public class CategoryDELETEController : CategoryController
     {
-    private readonly ICategoryRepository _categoryRepository;
-        public CategoryDELETEController(ICategoryRepository categoryRepository)
+        public CategoryDELETEController(ICategoryRepository categoryRepository) : base(categoryRepository)
         {
-            _categoryRepository = categoryRepository;
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var category = await _categoryRepository.CheckIfExists(id);
+            var category = await services.CheckIfExists(id);
             if (!category)
             {
                 return NotFound();
             }
 
-            await _categoryRepository.Delete(id);
+            await services.Delete(id);
             return NoContent();
         }
     }

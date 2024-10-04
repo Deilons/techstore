@@ -90,14 +90,37 @@ namespace techstore.Services
             return await _context.Categories.FindAsync(id);
         }
 
-        public Task<Category> Patch(int id, CategoryDTO category)
+        public async Task<Category> Patch(int id, CategoryDTO categoryDto)
         {
-            throw new NotImplementedException();
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return null;
+            }
+
+            if (!string.IsNullOrEmpty(categoryDto.Name))
+            {
+                category.Name = categoryDto.Name;
+            }
+
+            if (!string.IsNullOrEmpty(categoryDto.Description))
+            {
+                category.Description = categoryDto.Description;
+            }
+
+            if (categoryDto.ProductIds != null)
+            {
+                category.Products = categoryDto.ProductIds.Select(productId => new Product { Id = productId }).ToList();
+            }
+
+            await _context.SaveChangesAsync();
+
+            return category; 
         }
 
         public async Task<Category> Update(Category category)
         {
-            if(category == null)
+            if (category == null)
             {
                 throw new ArgumentNullException(nameof(category), "Category cannot be null");
             }

@@ -11,25 +11,23 @@ namespace techstore.Controllers.V1.Category
     [Route("api/v1/category")]
     [ApiExplorerSettings(GroupName = "v1")]
     [Tags("Category")]
-    public class CategoryGETController : ControllerBase
+    public class CategoryGETController : CategoryController
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryGETController(ICategoryRepository categoryRepository)
+        public CategoryGETController(ICategoryRepository categoryRepository) : base(categoryRepository)
         {
-            _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var categories = await _categoryRepository.GetAll();
+            var categories = await services.GetAll();
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var category = await _categoryRepository.GetById(id);
+            var category = await services.GetById(id);
             return Ok(category);
         }
     }
