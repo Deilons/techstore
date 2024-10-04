@@ -16,6 +16,17 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Category> Categories { get; set; }
+
+    public DbSet<Product> Products { get; set; }
+
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<Client> Clients { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Admin>()

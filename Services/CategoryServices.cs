@@ -2,44 +2,119 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using techstore.Data;
 using techstore.DTOs;
 using techstore.Models;
 using techstore.Repositories;
 
 namespace techstore.Services
 {
-    public class CategoryService : ICategoryServices
-{
-    private readonly ICategoryRepository _categoryRepository;
-
-    public CategoryService(ICategoryRepository categoryRepository)
+    public class CategoryService : ICategoryRepository
     {
-        _categoryRepository = categoryRepository;
-    }
+        private readonly ApplicationDbContext _context;
 
-    public IEnumerable<CategoryDTO> GetAllCategories()
-    {
-        // Lógica para obtener todas las categorías
-    }
+        public CategoryService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-    public CategoryDTO GetCategoryById(int id)
-    {
-        // Lógica para obtener una categoría por ID
-    }
+        public async Task<Category> Add(Category category)
+        {
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category), "Category cannot be null");
+            }
+            try
+            {
+                await _context.Categories.AddAsync(category);
+                await _context.SaveChangesAsync();
+                return category;
+            }
+            catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("Error occurred while adding category", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while adding category", ex);
+            }
+        }
 
-    public CategoryDTO CreateCategory(CategoryDTO categoryDto)
-    {
-        // Lógica para crear una nueva categoría
-    }
+        public async Task<bool> CheckIfExists(int id)
+        {
+            try
+            {
+                return await _context.Categories.AnyAsync(x => x.Id == id);
+            }
+            catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("Error occurred while checking if category exists", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while checking if category exists", ex);
+            }
+        }
 
-    public CategoryDTO UpdateCategory(int id, CategoryDTO categoryDto)
-    {
-        // Lógica para actualizar una categoría
-    }
+        public async Task<Category> Delete(int id)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            if (category == null)
+            {
+                return null;
+            }
+            try
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+                return category;
+            }
+            catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("Error occurred while deleting category", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while deleting category", ex);
+            }
+        }
 
-    public bool DeleteCategory(int id)
-    {
-        // Lógica para eliminar una categoría
+        public async Task<IEnumerable<Category>> GetAll()
+        {
+            return await _context.Categories.ToListAsync();
+        }
+
+        public async Task<Category> GetById(int id)
+        {
+            return await _context.Categories.FindAsync(id);
+        }
+
+        public Task<Category> Patch(int id, CategoryDTO category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Category> Update(Category category)
+        {
+            if(category == null)
+            {
+                throw new ArgumentNullException(nameof(category), "Category cannot be null");
+            }
+            try
+            {
+                _context.Categories.Update(category);
+                await _context.SaveChangesAsync();
+                return category;
+            }
+            catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("Error occurred while updating category", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while updating category", ex);
+            }
+        }
     }
-}
 }
